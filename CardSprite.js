@@ -7,22 +7,17 @@ class CardSprite extends PIXI.Container
 
         this.cardId = cardId;
 
-
         var texture = PIXI.Texture.from(frontFace);
         var s = PIXI.Sprite.from(texture);
 
-       s.anchor.x = 0.5;
-       s.anchor.y = 0.5;
-       s.scale.x = 0.4;
-       s.scale.y = 0.4;
+        s.anchor.x = 0.5;
+        s.anchor.y = 0.5;
+        s.scale.x = 0.4;
+        s.scale.y = 0.4;
 
         s.interactive = true;
         s.buttonMode = true;
 
-        s
-        .on('pointerover', (e)=> this.onButtonOver(e))
-        .on('pointerout', (e)=> this.onButtonOut(e))
-        .on('pointerdown', (e)=> this.onButtonDown(e))
 
         this.addChild(s);
 
@@ -41,12 +36,7 @@ class CardSprite extends PIXI.Container
         }
         this.addChild(this.Conatiner)
 
-        //this.addChild(s2);
-
         this.buttonSelected_bl = false;
-
-        this.Ticker = null;
-        return this;
     }
 
     set buttonSelected(aChoice)
@@ -59,17 +49,6 @@ class CardSprite extends PIXI.Container
         return this.buttonSelected_bl;
     }
 
-
-    onButtonOver()
-    {
-
-    }
-
-    onButtonOut()
-    {
-
-    }
-
     onButtonDown()
     {
         if (this.buttonSelected_bl)
@@ -77,21 +56,12 @@ class CardSprite extends PIXI.Container
             return;
         }
 
-        if (this.Conatiner.visible)
-        {
-            this.buttonSelected_bl = true;
-            this._initAnimationTicker().update(0);
-            this._initAnimationTicker().start();
-        }
-
+        this.buttonSelected_bl = true;
+        this._getTicker().update(0);
+        this._getTicker().start();
     }
 
-    _getAnimationTicker()
-    {
-        return this.Ticker || this._initAnimationTicker()
-    }
-
-    _initAnimationTicker()
+    _getTicker()
     {
         var lTicker = this.Ticker = new PIXI.Ticker();
         var lTimerValue_int = 0;
@@ -104,6 +74,11 @@ class CardSprite extends PIXI.Container
                 {
                     this.store[10-i-1].y -= (10-i-1);
                 }
+            }
+
+            if(lTimerValue_int === 22)
+            {
+                lTicker.stop();
             }
 
             lTimerValue_int +=1;

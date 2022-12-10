@@ -27,32 +27,23 @@ class Application
         graphics.beginFill(0x000000);
         graphics.drawRect(110, 270, 380, 200);
         graphics.endFill();
+
         this.app.stage.addChild(graphics);
 
         graphics.interactive = true;
         graphics.buttonMode = true;
 
         var style = new PIXI.TextStyle({
-            fontFamily: 'Arial',
+            fontFamily: 'Roboto',
             fontSize: 36,
-            fontStyle: 'italic',
             fontWeight: 'bold',
             fill: ['#ffffff', '#00ff99'], // gradient
-            stroke: '#4a1850',
-            strokeThickness: 5,
-            dropShadow: true,
-            dropShadowColor: '#000000',
-            dropShadowBlur: 4,
-            dropShadowAngle: Math.PI / 6,
-            dropShadowDistance: 6,
-            wordWrap: true,
-            wordWrapWidth: 440,
-            lineJoin: 'round',
         });
 
         var basicText = this.basicText = new PIXI.Text('Начать игру', style);
-        basicText.x = 140;
+        basicText.x = graphics.x+110;
         basicText.y = 270;
+
 
         this.app.stage.addChild(basicText);
 
@@ -67,15 +58,11 @@ class Application
         s.scale.x = 0.7;
         s.scale.y = 0.7;
         this.app.stage.addChild(s);*/
+        this.buttonSelectedArray = [];
 
     }
 
     onButtonDown()
-    {
-        this.start();
-    }
-
-    start()
     {
         var cards = this.cards = this._CardView.returnAllCards();
 
@@ -83,16 +70,59 @@ class Application
         {
                 cards[index].onButtonDown();
                 cards[index].buttonSelected = false;
+                cards[index].on('pointerdown', (e)=> this.BUTTON(cards[index]))
         }
 
-        this._getAnimationTickerUp().start();
+        this._initAnimationTickerUp().start();
         this.basicText.visible = false;
         this.graphics.visible = false;
     }
 
-    _getAnimationTickerUp()
+    BUTTON(aCard)
     {
-        return this.AnimationTickerUp || this._initAnimationTickerUp()
+        if (aCard.buttonSelected || this.buttonSelectedArray.length == 2)
+        {
+            return;
+        }
+
+        aCard.onButtonDown();
+        this.buttonSelectedArray.push(aCard);
+
+        if (this.buttonSelectedArray.length == 2)
+        {
+            if (this.buttonSelectedArray[0].cardId == this.buttonSelectedArray[1].cardId)
+            {
+                this.buttonSelectedArray = [];
+
+                return;
+            }
+            else
+            {
+                var lTicker = new PIXI.Ticker();
+                var lTimerValue_int = 0;
+
+                lTicker.add(() => //one tick is 1
+                {
+                    lTimerValue_int +=1;
+
+                    if (lTimerValue_int === 50)
+                    {
+                        this.buttonSelectedArray[0].startCloseAnimation();
+                        this.buttonSelectedArray[1].startCloseAnimation();
+
+                        this.buttonSelectedArray[0].buttonSelected = false;
+                        this.buttonSelectedArray[1].buttonSelected = false;
+
+                        this.buttonSelectedArray = [];
+
+                        lTicker.stop();
+                    }
+                })
+
+                lTicker.update(0);
+                lTicker.start();
+            }
+        }
     }
 
     _initAnimationTickerUp()
@@ -100,13 +130,12 @@ class Application
         var lTicker = this.AnimationTickerUp = new PIXI.Ticker();
         var lTimerValue_int = 0;
 
-        lTicker.add(() => //one tick is 1
+        lTicker.add(() =>
         {
             lTimerValue_int +=1;
 
-            if (lTimerValue_int === 100)
+            if (lTimerValue_int === 200)
             {
-                console.log('всё')
                 this.returnCards();
             }
         })
@@ -117,15 +146,10 @@ class Application
 
     returnCards()
     {
-        //this._getAnimationTickerUp().stop();
-        console.log(this.cards)
-
         for (let index = 0; index < this.cards.length; index++)
         {
             this.cards[index].startCloseAnimation();
-
         }
-
     }
 }
 

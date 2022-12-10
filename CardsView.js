@@ -67,6 +67,8 @@ class CardView extends PIXI.Container
     {
         return this.cards_arr;
     }
+
+
 }
 
 export default CardView;
