@@ -8,21 +8,19 @@ class CardSprite extends PIXI.Container
         this.cardId = cardId;
 
         var texture = PIXI.Texture.from(frontFace);
-        var s = PIXI.Sprite.from(texture);
 
+        var s = PIXI.Sprite.from(texture);
         s.anchor.x = 0.5;
         s.anchor.y = 0.5;
-        s.scale.x = 0.4;
-        s.scale.y = 0.4;
-
+        s.scale.x = 0.8;
+        s.scale.y = 0.8;
         s.interactive = true;
         s.buttonMode = true;
-
 
         this.addChild(s);
 
         this.store = [];
-        this.Conatiner = new PIXI.Container();
+        var container = new PIXI.Container();
         for (var i = 0; i < 10; i++)
         {
             var graphics = new PIXI.Graphics();
@@ -31,17 +29,19 @@ class CardSprite extends PIXI.Container
             graphics.drawRect(-40, -70 + i*12, 80, 11);
             graphics.endFill();
             this.store.push(graphics);
-            this.Conatiner.addChild(graphics);
+            container.addChild(graphics);
 
         }
-        this.addChild(this.Conatiner)
+        this.addChild(container);
 
         this.buttonSelected_bl = false;
+
+        this._ticker = new PIXI.Ticker();
     }
 
     set buttonSelected(aChoice)
     {
-        this.buttonSelected_bl = aChoice
+        this.buttonSelected_bl = aChoice;
     }
 
     get buttonSelected()
@@ -57,16 +57,15 @@ class CardSprite extends PIXI.Container
         }
 
         this.buttonSelected_bl = true;
-        this._getTicker().update(0);
-        this._getTicker().start();
+        this._getTicker();
     }
 
     _getTicker()
     {
-        var lTicker = this.Ticker = new PIXI.Ticker();
+        var lTicker = this._ticker;
         var lTimerValue_int = 0;
 
-        lTicker.add(() => //one tick is 1
+        lTicker.add(() =>
         {
             for (var i = 0; i < 10 ; i++)
             {
@@ -85,15 +84,16 @@ class CardSprite extends PIXI.Container
 
         })
 
-        return this.Ticker;
+        lTicker.update(0);
+        lTicker.start();
     }
 
     startCloseAnimation()
     {
-        var lTicker = this.Ticker2 = new PIXI.Ticker();
+        var lTicker = this._ticker;
         var lTimerValue_int = 0;
 
-        lTicker.add(() => //one tick is 1
+        lTicker.add(() =>
         {
             for (var i = 0; i < 10 ; i++)
             {

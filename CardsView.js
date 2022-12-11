@@ -26,7 +26,7 @@ class CardView extends PIXI.Container
             {
                 card = new CardSprite(url + frontFace[i_row < 2 ? j_col : j_col + 4] + format, frontFace[i_row < 2 ? j_col : j_col + 4]);
                 cards_arr[i_row][j_col] = card;
-                coord_arr[i_row][j_col] = [100 + j_col*130, 150 + i_row*150];
+                coord_arr[i_row][j_col] = [93 + j_col*138, 146 + i_row*182];
 
                 this.cards_arr.push(card);
                 this.addChild(card);
@@ -59,16 +59,12 @@ class CardView extends PIXI.Container
             }
         }
         //...Рандомно расставляем карточки по созданным координатам
-
-        return this;
     }
 
     returnAllCards()
     {
         return this.cards_arr;
     }
-
-
 }
 
 export default CardView;
