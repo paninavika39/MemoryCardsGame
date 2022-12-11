@@ -36,7 +36,9 @@ class CardSprite extends PIXI.Container
 
         this.buttonSelected_bl = false;
 
-        this._ticker = new PIXI.Ticker();
+        this._ticker1 = new PIXI.Ticker();
+        this._ticker2 = new PIXI.Ticker();
+
     }
 
     set buttonSelected(aChoice)
@@ -62,7 +64,7 @@ class CardSprite extends PIXI.Container
 
     _getTicker()
     {
-        var lTicker = this._ticker;
+        var lTicker = this._ticker1;
         var lTimerValue_int = 0;
 
         lTicker.add(() =>
@@ -90,7 +92,7 @@ class CardSprite extends PIXI.Container
 
     startCloseAnimation()
     {
-        var lTicker = this._ticker;
+        var lTicker = this._ticker2;
         var lTimerValue_int = 0;
 
         lTicker.add(() =>
