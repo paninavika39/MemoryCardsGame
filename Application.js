@@ -95,8 +95,6 @@ class Application
             cards[i_card].buttonSelected = true;
             cards[i_card].eventMode = 'static';
             cards[i_card].on('pointertap', (event) => this._onButtonDown(event));
-
-
         }
 
         this._initAnimationTickerUp();
