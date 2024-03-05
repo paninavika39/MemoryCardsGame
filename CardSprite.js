@@ -14,7 +14,11 @@ class CardSprite extends PIXI.Container
         s.anchor.y = 0.5;
         s.scale.x = 0.8;
         s.scale.y = 0.8;
-        s.interactive = true;
+        //s.interactive = true;
+        s.eventMode = 'static'; // Устанавливаем режим событий
+        // Устанавливаем объект как интерактивный
+        // Добавляем обработчик события mousedown
+        //s.on('mousedown', this.onButtonDown());
         s.buttonMode = true;
 
         this.addChild(s);

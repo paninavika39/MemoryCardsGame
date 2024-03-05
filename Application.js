@@ -53,7 +53,10 @@ class Application
         graphics2.alpha = 0.8;
         this.app.stage.addChild(graphics2);
 
-        graphics.interactive = true;
+        //graphics.interactive = true;
+        graphics.eventMode = 'static'; // Устанавливаем режим событий
+        //graphics.eventMode = 'pointer';
+
         graphics.buttonMode = true;
 
         var style = new PIXI.TextStyle({
@@ -74,7 +77,7 @@ class Application
         this.basicText2.visible = false;
         this.graphics.visible = true;
         this.graphics2.visible = true;
-        graphics.on('pointerdown', ()=> this.onButtonDown());
+        graphics.on('pointertap', (event) => this.onButtonDown(event));
 
         this.app.stage.addChild(basicText);
         this.app.stage.addChild(basicText2);
@@ -82,7 +85,7 @@ class Application
         this._ticker = new PIXI.Ticker();
     }
 
-    onButtonDown()
+    onButtonDown(event)
     {
         var cards = this.cards = this._CardView.returnAllCards();
 
@@ -90,7 +93,10 @@ class Application
         {
             cards[i_card].onButtonDown();
             cards[i_card].buttonSelected = true;
-            cards[i_card].on('pointerdown', ()=> this._onButtonDown(cards[i_card]));
+            cards[i_card].eventMode = 'static';
+            cards[i_card].on('pointertap', (event) => this._onButtonDown(event));
+
+
         }
 
         this._initAnimationTickerUp();
@@ -103,6 +109,7 @@ class Application
 
     _onButtonDown(aCard)
     {
+        aCard = aCard.currentTarget;
         if (aCard.buttonSelected || this.buttonSelectedArray.length == 2)
         {
             return;
