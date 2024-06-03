@@ -38,6 +38,8 @@ class CardSprite extends PIXI.Container {
     setSprite(face) {
         const sprite = PIXI.Sprite.from(PIXI.Texture.from(face));
 
+        sprite.width = this.cardWidth;
+        sprite.height = this.cardHeight;
         sprite.eventMode = 'static'; 
         sprite.buttonMode = true;
         sprite.on('pointertap', this.onClick.bind(this));
